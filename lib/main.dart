@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: "/",
+      debugShowCheckedModeBanner: false,
       onGenerateRoute: router.generateRoute,
     );
   }

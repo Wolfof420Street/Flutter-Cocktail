@@ -8,8 +8,8 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushNamedAndRemoveUntil(
-          context, "home", (route) => false);
+      Navigator.pushNamed(
+          context, "home");
     });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -20,9 +20,12 @@ class SplashScreen extends StatelessWidget {
         statusBarColor: Colors.transparent),
       child: Scaffold(
         body: Container(
+
           decoration: const BoxDecoration(
-            image: DecorationImage(image: AssetImage(
-              'background.jpg'
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(
+              'assets/background.jpg'
             ))
           ),
         ),

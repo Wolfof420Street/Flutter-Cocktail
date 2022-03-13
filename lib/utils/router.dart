@@ -1,3 +1,4 @@
+import 'package:cocktails/ui/cocktail-detail.dart';
 import 'package:cocktails/ui/home_page.dart';
 import 'package:cocktails/ui/splash_screen.dart';
 import 'package:flutter/material.dart';
