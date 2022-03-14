@@ -1,6 +1,7 @@
 import 'package:cocktails/blocs/cocktail_bloc.dart';
 import 'package:cocktails/blocs/random-cocktail-bloc.dart';
 import 'package:cocktails/ui/alcoholic-cocktails.dart';
+import 'package:cocktails/ui/cocktail-detail.dart';
 import 'package:cocktails/ui/non-alcohlic-cocktails.dart';
 import 'package:cocktails/ui/popular-cocktails.dart';
 import 'package:flutter/foundation.dart';
@@ -149,24 +150,31 @@ class RandomCocktailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          decoration:  BoxDecoration(
-            image: DecorationImage(image: NetworkImage(cocktail.drinks[0].strDrinkThumb ?? ''),
-              fit: BoxFit.cover
-            )
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> CocktailDetail(
+          drinks: cocktail.drinks[0],
+        )));
+      },
+      child: Stack(
+        children: [
+          Container(
+            decoration:  BoxDecoration(
+              image: DecorationImage(image: NetworkImage(cocktail.drinks[0].strDrinkThumb ?? ''),
+                fit: BoxFit.cover
+              )
+            ),
+            alignment: Alignment.center,
           ),
-          alignment: Alignment.center,
-        ),
-        Container(
-          alignment: Alignment.bottomRight,
-          child: Text(
-                cocktail.drinks[0].strDrink,
-                style: const TextStyle(color: Colors.blue, fontSize: 40, fontWeight: FontWeight.bold),
-              ),
-        ),
-      ],
+          Container(
+            alignment: Alignment.bottomRight,
+            child: Text(
+                  cocktail.drinks[0].strDrink,
+                  style: const TextStyle(color: Colors.blue, fontSize: 40, fontWeight: FontWeight.bold),
+                ),
+          ),
+        ],
+      ),
     );
   }
 }

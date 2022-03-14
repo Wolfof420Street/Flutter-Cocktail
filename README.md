@@ -2,15 +2,27 @@
 
 App Listing Cocktails
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## 
 
-A few resources to get you started if this is your first Flutter project:
+This project is a simple project showing the use of BLOC in State Management. It Shows a List Of Cocktails From a Public API and Opens A Detail Page On How to Make The Cocktails. The Home Page Also Shows A Random Cocktail Each time the page is reloaded. I am Looking Forward To Improve The User Interface And Add More Features To It. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+A few resources to help you if you are Not Aware What BLOC is in Flutter State Management
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- [Bloc State Management](https://bloclibrary.dev/)
+- [State Management in FLutter](https://blog.logrocket.com/state-management-flutter-bloc-pattern/)
+
+
+## Data
+The Data Comes From this Public API here 
+
+- [The Cocktail DB](https://www.thecocktaildb.com/api.php)
+
+## UI
+
+![Screenshot_1647264092](https://user-images.githubusercontent.com/47379369/158183859-9992a21e-4bf8-4510-b7ec-29cc71b69e9d.png)
+
+![Screenshot_1647264294](https://user-images.githubusercontent.com/47379369/158184200-50e6d6ce-fcfc-4bcc-95bf-977b570e5650.png)
+
+
+
