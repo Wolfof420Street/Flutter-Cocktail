@@ -35,102 +35,101 @@ class _HomePageState extends State<HomePage> {
     int _selectedIndex = 0;
 
     return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        child:
+      body:
               Column(
                 children: [
-                  Container(
-                    height: size.height * 0.3,
-                    width: size.width,
+                  Expanded(
                     child: BlocProvider(
-                      create: (_) => _cocktailsBloc,
-                      child: BlocListener<RandomCocktailBloc, RandomCockTailsState>(
-                        listener: (context, state) {
-                          if (state is RandomCocktailError) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(state.message!),
-                              ),
-                            );
-                          }
-                        },
-                        child: BlocBuilder<RandomCocktailBloc, RandomCockTailsState>(
-                            builder: (context, state) {
-                              if (state is RandomCocktailInitial) {
-                                return _buildLoading();
-                              } else if (state is RandomCocktailsLoading) {
-                                return _buildLoading();
-                              } else if (state is RandomCockTailsLoaded) {
-                                return Expanded(
-                                    child: _buildCard(context, state.cocktail));
-                              } else if (state is CocktailError) {
-                                return Container();
-                              } else {
-                                return Container();
-                              }
-                            }),
+                        create: (_) => _cocktailsBloc,
+                        child: BlocListener<RandomCocktailBloc, RandomCockTailsState>(
+                          listener: (context, state) {
+                            if (state is RandomCocktailError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(state.message!),
+                                ),
+                              );
+                            }
+                          },
+                          child: BlocBuilder<RandomCocktailBloc, RandomCockTailsState>(
+                              builder: (context, state) {
+                                if (state is RandomCocktailInitial) {
+                                  return _buildLoading();
+                                } else if (state is RandomCocktailsLoading) {
+                                  return _buildLoading();
+                                } else if (state is RandomCockTailsLoaded) {
+                                  return Expanded(
+                                      child: _buildCard(context, state.cocktail));
+                                } else if (state is CocktailError) {
+                                  return Container();
+                                } else {
+                                  return Container();
+                                }
+                              }),
+                        ),
                       ),
-                    ),
                   ),
-                  Row(
-                    children:  [
-                    Container(
-                      width: 69,
-                      child: NavigationRail(
-                      groupAlignment: 0.0,
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: (int index) {
-                        setState(() {
-                          _selectedIndex = index;
-                          if (kDebugMode) {
-                            print('selected index : ' + index.toString());
-                          }
-                        });
-                      },
-                      labelType: NavigationRailLabelType.all,
-                      destinations: const <NavigationRailDestination>[
-                        NavigationRailDestination(
-                          icon: SizedBox.shrink(),
-                          label: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: RotatedBox(
-                              quarterTurns: -1,
-                              child: Text("Alcoholic"),
+                  Expanded(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children:  [
+                      SizedBox(
+                        width: 69,
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        child: NavigationRail(
+                        groupAlignment: 0.0,
+                        selectedIndex: _selectedIndex,
+                        onDestinationSelected: (int index) {
+                          setState(() {
+                            _selectedIndex = index;
+                            if (kDebugMode) {
+                              print('selected index : ' + index.toString());
+                            }
+                          });
+                        },
+                        labelType: NavigationRailLabelType.all,
+                        destinations: const <NavigationRailDestination>[
+                          NavigationRailDestination(
+                            icon: SizedBox.shrink(),
+                            label: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text("Alcoholic"),
+                              ),
                             ),
                           ),
-                        ),
-                        NavigationRailDestination(
-                          icon: SizedBox.shrink(),
-                          label: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: RotatedBox(
-                              quarterTurns: -1,
-                              child: Text("Non-Alcoholic"),
+                          NavigationRailDestination(
+                            icon: SizedBox.shrink(),
+                            label: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text("Non-Alcoholic"),
+                              ),
                             ),
                           ),
-                        ),
-                        NavigationRailDestination(
-                          icon: SizedBox.shrink(),
-                          label: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: RotatedBox(
-                              quarterTurns: -1,
-                              child: Text("Popular"),
+                          NavigationRailDestination(
+                            icon: SizedBox.shrink(),
+                            label: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text("Popular"),
+                              ),
                             ),
                           ),
-                        ),
-                        ]),
+                          ]),
+                      ),
+                        const VerticalDivider(thickness: 1, width: 1),
+                        _selectedIndex == 0 ? const Expanded(child: AlcoholicCocktails())
+                                : _selectedIndex == 1 ? const Expanded(child: NonAlcoholicCocktails()) :
+                            const Expanded(child: PopularCocktails()),
+                      ],
                     ),
-                      const VerticalDivider(thickness: 1, width: 1),
-                      _selectedIndex == 0 ? const Expanded(child: AlcoholicCocktails())
-                              : _selectedIndex == 1 ? const Expanded(child: NonAlcoholicCocktails()) :
-                          const Expanded(child: PopularCocktails()),
-                    ],
                   ),
                 ],
               )
-        ),
     );
   }
   Widget _buildLoading() => const Center(child: CircularProgressIndicator());
@@ -153,22 +152,20 @@ class RandomCocktailCard extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: [
-              Center(
-                  child: Text(
-                cocktail.drinks[0].strDrink,
-                style: const TextStyle(color: Colors.black12, fontSize: 20),
-              )),
-              Text(
-                cocktail.drinks[0].strGlass ?? '',
-                style: const TextStyle(color: Colors.black12, fontSize: 10),
-              )
-            ],
+          decoration:  BoxDecoration(
+            image: DecorationImage(image: NetworkImage(cocktail.drinks[0].strDrinkThumb ?? ''),
+              fit: BoxFit.cover
+            )
           ),
+          alignment: Alignment.center,
         ),
-        Image(image: NetworkImage(cocktail.drinks[0].strDrinkThumb ?? ''))
+        Container(
+          alignment: Alignment.bottomRight,
+          child: Text(
+                cocktail.drinks[0].strDrink,
+                style: const TextStyle(color: Colors.blue, fontSize: 40, fontWeight: FontWeight.bold),
+              ),
+        ),
       ],
     );
   }

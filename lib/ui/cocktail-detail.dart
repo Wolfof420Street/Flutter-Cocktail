@@ -31,7 +31,7 @@ class _CocktailDetailState extends State<CocktailDetail> {
 
 
     return Container(
-      color: Colors.blue,
+      color: Colors.white,
       padding: const EdgeInsets.only(top: 20.0),
       child: Column(
             children: [
@@ -77,46 +77,186 @@ class _CocktailDetailState extends State<CocktailDetail> {
 
   Widget _cocktailDetailPage(Drinks drinks) {
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Center(
-            child: Text(
-              drinks.strDrink,
-              style: const TextStyle(color: Colors.white, fontSize: 20),
-            )),
-        Container(
-          alignment: Alignment.topCenter,
-          padding: const EdgeInsets.only(top: 30),
-          height: MediaQuery.of(context).size.height * 0.5,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(drinks.strDrinkThumb ?? ''),
-                  fit: BoxFit.cover
-              )
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            drinks.strGlass ?? '',
-            textAlign: TextAlign.start,
-            style: const TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            drinks.strInstructions ?? '',
-            textAlign: TextAlign.start,
-            style: const TextStyle(color: Colors.white,
-              fontSize: 20,
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10))
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top : 10.0),
+              child: Center(
+                  child: Text(
+                    drinks.strDrink,
+                    style: const TextStyle(color: Colors.blue, fontSize: 20, fontFamily: 'Gothic', fontWeight: FontWeight.bold),
+                  )),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                alignment: Alignment.topCenter,
+                padding: const EdgeInsets.all(15),
+                height: MediaQuery.of(context).size.height * 0.5,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    image: DecorationImage(
+                        image: NetworkImage(drinks.strDrinkThumb ?? ''),
+                        fit: BoxFit.cover
+                    )
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                   'Glass : ',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'Gothic'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    drinks.strGlass ?? '',
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(color: Colors.redAccent, fontSize: 20, fontFamily: 'Gothic'),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.center,
+                child: const Text(
+                  'Ingredients : ',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: Colors.blue,
+                      fontSize: 20,
+                      fontFamily: 'Gothic',
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      const MyBullet(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          drinks.strIngredient1 ?? '',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontFamily: 'Gothic',
+                            color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      const MyBullet(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          drinks.strIngredient2 ?? '',
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Gothic',
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    children: [
+                      const MyBullet(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          drinks.strIngredient3 ?? '',
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Gothic',
+                              color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.center,
+                child: const Text(
+                  'Instructions : ',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: Colors.blue,
+                    fontSize: 20,
+                    fontFamily: 'Gothic',
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  drinks.strInstructions ?? '',
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(color: Colors.black,
+                    fontSize: 20,
+                    fontFamily: 'Gothic',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
+
+class MyBullet extends StatelessWidget{
+  const MyBullet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      height: 15.0,
+      width: 15.0,
+      decoration: const BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
+      ),
+    );
+  }
+}
+
 
 
