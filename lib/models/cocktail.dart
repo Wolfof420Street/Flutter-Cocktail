@@ -1,4 +1,7 @@
 class Cocktail {
+
+  String? error;
+
   Cocktail({
     required this.drinks,
   });
@@ -13,7 +16,13 @@ class Cocktail {
     _data['drinks'] = drinks.map((e)=>e.toJson()).toList();
     return _data;
   }
+
+  Cocktail.withError(String errorMessage) {
+    error = errorMessage;
+  }
+
 }
+
 
 class Drinks {
   Drinks({
@@ -72,23 +81,23 @@ class Drinks {
   late final String idDrink;
   late final String strDrink;
   late final String? strDrinkAlternate;
-  late final String strTags;
+  late final String? strTags;
   late final String? strVideo;
-  late final String strCategory;
-  late final String strIBA;
-  late final String strAlcoholic;
-  late final String strGlass;
-  late final String strInstructions;
+  late final String? strCategory;
+  late final String? strIBA;
+  late final String? strAlcoholic;
+  late final String? strGlass;
+  late final String? strInstructions;
   late final String? strInstructionsES;
-  late final String strInstructionsDE;
+  late final String? strInstructionsDE;
   late final String? strInstructionsFR;
-  late final String strInstructionsIT;
+  late final String? strInstructionsIT;
   late final String? strInstructionsZH;
   late final String? strInstructionsZHHANT;
-  late final String strDrinkThumb;
-  late final String strIngredient1;
-  late final String strIngredient2;
-  late final String strIngredient3;
+  late final String? strDrinkThumb;
+  late final String? strIngredient1;
+  late final String? strIngredient2;
+  late final String? strIngredient3;
   late final String? strIngredient4;
   late final String? strIngredient5;
   late final String? strIngredient6;
@@ -118,8 +127,8 @@ class Drinks {
   late final String? strMeasure15;
   late final String? strImageSource;
   late final String? strImageAttribution;
-  late final String strCreativeCommonsConfirmed;
-  late final String dateModified;
+  late final String? strCreativeCommonsConfirmed;
+  late final String? dateModified;
 
   Drinks.fromJson(Map<String, dynamic> json){
     idDrink = json['idDrink'];
