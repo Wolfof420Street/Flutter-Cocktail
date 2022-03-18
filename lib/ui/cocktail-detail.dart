@@ -1,22 +1,23 @@
-import 'package:cocktails/blocs/cocktail_detail_bloc.dart';
+import 'package:cocktails/blocs/cocktail-detail/cocktail_detail_bloc.dart';
 import 'package:cocktails/models/cocktail.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CocktailDetail extends StatefulWidget {
-
   final Drinks? drinks;
 
-  const CocktailDetail({Key? key,  this.drinks}) : super(key: key);
+  const CocktailDetail({Key? key, this.drinks}) : super(key: key);
 
   @override
   State<CocktailDetail> createState() => _CocktailDetailState();
 }
 
 class _CocktailDetailState extends State<CocktailDetail> {
+  late final CocktailDetailBloc _cocktailsBloc =
+  CocktailDetailBloc(widget.drinks!.idDrink);
 
-  late final CocktailDetailBloc _cocktailsBloc = CocktailDetailBloc(widget.drinks!.idDrink);
+  var top = 220;
 
   @override
   void initState() {
@@ -24,46 +25,41 @@ class _CocktailDetailState extends State<CocktailDetail> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-
-
     return Container(
-      color: Colors.white,
       padding: const EdgeInsets.only(top: 20.0),
       child: Column(
-            children: [
-              BlocProvider(
-                create: (_) => _cocktailsBloc,
-                child: BlocListener<CocktailDetailBloc, CockTailDetailState>(
-                  listener: (context, state) {
-                    if (state is CocktailDetailsError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(state.message!),
-                        ),
-                      );
+        children: [
+          BlocProvider(
+            create: (_) => _cocktailsBloc,
+            child: BlocListener<CocktailDetailBloc, CockTailDetailState>(
+              listener: (context, state) {
+                if (state is CocktailDetailsError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message!),
+                    ),
+                  );
+                }
+              },
+              child: BlocBuilder<CocktailDetailBloc, CockTailDetailState>(
+                  builder: (context, state) {
+                    if (state is CocktailDetailInitial) {
+                      return _buildLoading();
+                    } else if (state is CocktailDetailsLoading) {
+                      return _buildLoading();
+                    } else if (state is CockTailDetailsLoaded) {
+                      return Expanded(
+                          child: _buildCard(context, state.cocktail));
+                    } else if (state is CocktailDetailsError) {
+                      return Container();
+                    } else {
+                      return Container();
                     }
-                  },
-                  child: BlocBuilder<CocktailDetailBloc, CockTailDetailState>(
-                      builder: (context, state) {
-                        if (state is CocktailDetailInitial) {
-                          return _buildLoading();
-                        } else if (state is CocktailDetailsLoading) {
-                          return _buildLoading();
-                        } else if (state is CockTailDetailsLoaded) {
-                          return Expanded(
-                              child: _buildCard(context, state.cocktail));
-                        } else if (state is CocktailDetailsError) {
-                          return Container();
-                        } else {
-                          return Container();
-                        }
-                      }),
-                ),
-              ),
+                  }),
+            ),
+          ),
         ],
       ),
     );
@@ -76,187 +72,319 @@ class _CocktailDetailState extends State<CocktailDetail> {
   }
 
   Widget _cocktailDetailPage(Drinks drinks) {
+    return Scaffold(
+      body: NestedScrollView(
+        body: Container(
+          decoration: const BoxDecoration(color: Color(0xFF20124D)),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.6,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(30)),
 
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10))
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top : 10.0),
-              child: Center(
-                  child: Text(
-                    drinks.strDrink,
-                    style: const TextStyle(color: Colors.blue, fontSize: 20, fontFamily: 'Gothic', fontWeight: FontWeight.bold),
-                  )),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                alignment: Alignment.topCenter,
-                padding: const EdgeInsets.all(15),
-                height: MediaQuery.of(context).size.height * 0.5,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    image: DecorationImage(
-                        image: NetworkImage(drinks.strDrinkThumb ?? ''),
-                        fit: BoxFit.cover
-                    )
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                   'Glass : ',
-                    textAlign: TextAlign.start,
-                    style: TextStyle(color: Colors.black, fontSize: 20, fontFamily: 'Gothic'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    drinks.strGlass ?? '',
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(color: Colors.redAccent, fontSize: 20, fontFamily: 'Gothic'),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  'Ingredients : ',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.blue,
-                      fontSize: 20,
-                      fontFamily: 'Gothic',
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-              ),
-            ),
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const MyBullet(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          drinks.strIngredient1 ?? '',
-                          style: const TextStyle(
-                            fontSize: 15,
-                            fontFamily: 'Gothic',
-                            color: Colors.black
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20.0),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            drinks.strDrink,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                decoration: TextDecoration.none,
+                                letterSpacing: 5,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Lobster'),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const MyBullet(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          drinks.strIngredient2 ?? '',
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Gothic',
-                              color: Colors.black
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: _cocktailItem(
+                                    "Glass", drinks.strGlass ?? ''),
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                              thickness: 1.0,
+                            ),
+                            SizedBox(
+                              height: 100,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: _cocktailItem(
+                                    "Category", drinks.strCategory ?? ''),
+                              ),
+                            ),
+                            const Divider(
+                              color: Colors.white,
+                              thickness: 1.0,
+                            ),
+                            SizedBox(
+                              height: 100,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: _cocktailItem(
+                                    "Alcoholic", drinks.strAlcoholic ?? ''),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            alignment: Alignment.topLeft,
+                            child: const Text(
+                              'Ingredients : ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      const MyBullet(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          drinks.strIngredient3 ?? '',
-                          style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Gothic',
-                              color: Colors.black
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.1,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.3,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                                  child: Center(
+                                    child: Text(
+                                      drinks.strIngredient1 ?? '',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decorationStyle: TextDecorationStyle
+                                              .wavy),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                                  padding: const EdgeInsets.all(10),
+                                  height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.1,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.3,
+                                  child: Center(
+                                    child: Text(
+                                      drinks.strIngredient2 ?? '',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15.0,
+                                          decorationStyle: TextDecorationStyle
+                                              .wavy),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                    color: Colors.amber,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                                padding: const EdgeInsets.all(10),
+                                height: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .height * 0.1,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width * 0.3,
+                                child: Center(
+                                  child: Text(
+                                    drinks.strIngredient3 ?? '',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15.0,
+                                        decorationStyle: TextDecorationStyle
+                                            .wavy),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.center,
-                child: const Text(
-                  'Instructions : ',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.blue,
-                    fontSize: 20,
-                    fontFamily: 'Gothic',
-                    fontWeight: FontWeight.bold
-                  ),
-                ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            alignment: Alignment.topLeft,
+                            child: const Text(
+                              'Instructions : ',
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                drinks.strInstructions ?? '',
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  drinks.strInstructions ?? '',
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(color: Colors.black,
-                    fontSize: 20,
-                    fontFamily: 'Gothic',
-                  ),
-                ),
-              ),
-            ),
-          ],
         ),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            _headerSection(drinks.strDrinkThumb, drinks.strDrink)
+          ];
+        },
       ),
     );
   }
-}
 
-class MyBullet extends StatelessWidget{
-  const MyBullet({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return  Container(
-      height: 15.0,
-      width: 15.0,
-      decoration: const BoxDecoration(
-        color: Colors.black,
-        shape: BoxShape.circle,
-      ),
+  Widget _cocktailItem(String title, String content) {
+    return Column(
+      children: [
+        SizedBox(
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              title,
+              style: const TextStyle(
+                decoration: TextDecoration.none,
+                color: Colors.white,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(content,
+              style: const TextStyle(
+                color: Colors.amber,
+                decoration: TextDecoration.none,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              )),
+        )
+      ],
     );
   }
+
+
+  Widget _headerSection(String? url, String name) {
+    return SliverAppBar(
+        backgroundColor: const Color(0xFF20124D),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        expandedHeight: 220.0,
+        floating: false,
+        pinned: true,
+        flexibleSpace: LayoutBuilder(
+            builder: (BuildContext ctx, BoxConstraints constraints) {
+                return  FlexibleSpaceBar(
+                  centerTitle: true,
+                    title: const AnimatedOpacity(
+                    opacity: 1.0,
+                    duration: Duration(milliseconds: 300),
+                    ),
+                  background: top > 200 ? Stack(
+                    children: [
+                      Container(
+                          alignment: Alignment.topLeft,
+                          child: const Icon(Icons.arrow_back, color: Colors.white)),
+                      Container(
+                        alignment: Alignment.topCenter,
+                        padding: const EdgeInsets.all(15),
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            const BorderRadius.vertical(top: Radius.circular(10)),
+                            image: DecorationImage(
+                                image: NetworkImage(url ?? ''),
+                                fit: BoxFit.cover)),
+                      ),
+                    ],
+                  ) : Text(
+                    name,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  )
+                );
+            }));
+  }
 }
-
-
 
