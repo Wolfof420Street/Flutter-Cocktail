@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/cocktail.dart';
-import '../providers/api-repository.dart';
+import '../../models/cocktail.dart';
+import '../../providers/api-repository.dart';
 
 part 'cocktail-detail-event.dart';
 part 'cocktail-detail-state.dart';

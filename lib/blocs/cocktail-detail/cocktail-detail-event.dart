@@ -1,4 +1,4 @@
-part of 'cocktail_detail_bloc.dart';
+part of  '../cocktail-detail/cocktail_detail_bloc.dart';
 
 abstract class CocktailDetailEvent extends Equatable {
   const CocktailDetailEvent();

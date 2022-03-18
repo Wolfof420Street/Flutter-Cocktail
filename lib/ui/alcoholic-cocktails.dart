@@ -1,4 +1,4 @@
-import 'package:cocktails/blocs/cocktail_bloc.dart';
+import 'package:cocktails/blocs/alcoholic-cocktails/cocktail_bloc.dart';
 import 'package:cocktails/models/cocktail.dart';
 import 'package:cocktails/ui/cocktail-card.dart';
 import 'package:flutter/material.dart';
