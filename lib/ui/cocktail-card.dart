@@ -20,6 +20,14 @@ class CocktailCard extends StatelessWidget {
           height: 150,
           width: 150,
           decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.indigo.withOpacity(0.5), //color of shadow
+                  spreadRadius: 5, //spread radius
+                  blurRadius: 7, // blur radius
+                  offset: const Offset(0, 2), // changes position of shadow
+                ),
+              ],
               borderRadius: BorderRadius.circular(10),
               image: DecorationImage(
                   fit: BoxFit.cover,

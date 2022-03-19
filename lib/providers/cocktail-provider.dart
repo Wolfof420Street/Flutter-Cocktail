@@ -63,7 +63,7 @@ class CocktailProvider {
 
   Future<Glass> fetchGlasses() async {
     try {
-      Response response = await _dio.get(_baseUrl + 'list.php?c=list');
+      Response response = await _dio.get(_baseUrl + 'list.php?g=list');
       return Glass.fromJson(response.data);
     } catch (error, stacktrace) {
       if (kDebugMode) {
