@@ -18,11 +18,7 @@ The Data Comes From this Public API here
 
 - [The Cocktail DB](https://www.thecocktaildb.com/api.php)
 
-## UI
 
-![Screenshot_1647264092](https://user-images.githubusercontent.com/47379369/158183859-9992a21e-4bf8-4510-b7ec-29cc71b69e9d.png)
-
-![Screenshot_1647264294](https://user-images.githubusercontent.com/47379369/158184200-50e6d6ce-fcfc-4bcc-95bf-977b570e5650.png)
 
 
 
